@@ -526,14 +526,7 @@ void Handler::OnPacketChat(Packet& p)
 	{
 		p.Skip(4);
 		std::string strChat = p.ReadL1String();
-		Packet pac(200001201);
-		pac.WriteInt(0);
-		pac.WriteInt(iChatType);
-		pac.WriteShort(0);
-		pac.WriteL1String(strChat);
-		pac.WriteULong(m_pkParent->GetPlayer()->GetGUID());
-		pac.WriteL1String(m_pkParent->GetPlayer()->GetName());
-		m_pkParent->Send(&pac);
+		m_pkParent->GetPlayer()->RecvChat(iChatType, strChat, "");
 	}
 }
 
@@ -986,7 +979,6 @@ void Handler::SendChat(int iRetCode, int iChatType, std::string strMessage, Play
 {
 	Packet p(200001201);
 	p.WriteInt(iRetCode);
-	p.Skip(4);
 	if (iChatType == 1)
 	{
 		p.WriteInt(iChatType);
